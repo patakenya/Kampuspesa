@@ -27,6 +27,17 @@ CREATE TABLE articles (
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
+    featured_image VARCHAR(255) DEFAULT NULL
+);
+
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    article_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME NOT NULL,
+    FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE earnings (
@@ -69,6 +80,25 @@ CREATE TABLE payments (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL,
+    INDEX idx_email (email)
+);
+
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    type ENUM('deposit', 'withdrawal', 'earning') NOT NULL,
+    status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
+    created_at DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 -- Sample data for testing
 INSERT INTO users (full_name, username, email, phone, password, referrer_code, referrer_code_own, tier, payment_ref, payment_status, balance, created_at)
 VALUES ('John Doe', 'johndoe', 'john@example.com', '+254123456789', '$2y$10$examplehashedpassword', 'REF123', 'UNIQUE123', 'gold', '4178866', 'completed', 450.00, NOW()),
@@ -90,3 +120,4 @@ VALUES ('Jane Doe', 'jane@example.com', 'I have a question about article submiss
 INSERT INTO payments (user_id, tier, amount, transaction_code, payment_ref, status, created_at)
 VALUES (1, 'gold', 1000.00, 'WS12345678', '4178866', 'completed', NOW()),
        (2, 'silver', 750.00, 'WS98765432', '4178866', 'completed', NOW());
+

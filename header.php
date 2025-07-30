@@ -6,10 +6,14 @@ require_once 'config.php';
 $user = null;
 if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare("SELECT username, tier FROM users WHERE id = ?");
-    $stmt->bind_param("i", $_SESSION['user_id']);
-    $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
+    if (!$stmt) {
+        error_log("Database error: Unable to prepare user query: " . $conn->error);
+    } else {
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -61,71 +65,122 @@ if (isset($_SESSION['user_id'])) {
         <div class="px-4 py-3">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
+                 <img src="logo.png" alt="logo" height="40" class="h-10">
                 <div class="flex items-center space-x-4">
                     <h1 class="text-2xl font-['Pacifico'] text-primary">CampusEarn</h1>
                 </div>
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center space-x-6">
-                    <?php if (!isset($_SESSION['user_id'])) { ?>
-                        <!-- Show Home link only for signed-out users -->
-                        <a href="index.php#home" class="text-gray-600 hover:text-primary font-medium">Home</a>
+                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php#home'; ?>" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Home">Home</a>
+                    <a href="how_it_works.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="How It Works">How It Works</a>
+                    <a href="Membership_Tiers.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Membership Tiers">Membership Tiers</a>
+                    <a href="articles.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Articles">Articles</a>
+                    <?php if (isset($_SESSION['user_id']) && in_array($user['tier'], ['silver', 'gold'])) { ?>
+                        <a href="write_article.php" 
+                           class="text-gray-600 hover:text-primary font-medium" 
+                           aria-label="Write Article">Write Article</a>
                     <?php } ?>
-                    <a href="how_it_works.php" class="text-gray-600 hover:text-primary font-medium">How It Works</a>
-                    <a href="index.php#tiers" class="text-gray-600 hover:text-primary font-medium">Membership Tiers</a>
-                    <a href="articles.php" class="text-gray-600 hover:text-primary font-medium">Articles</a>
                     <?php if (isset($_SESSION['user_id'])) { ?>
                         <!-- User profile dropdown for signed-in users -->
                         <div class="relative group">
-                            <button class="flex items-center space-x-2 text-gray-600 hover:text-primary font-medium focus:outline-none" aria-haspopup="true" aria-expanded="false">
-                                <span><?php echo htmlspecialchars($user['username']); ?></span>
+                            <button class="flex items-center space-x-2 text-gray-600 hover:text-primary font-medium focus:outline-none" 
+                                    aria-haspopup="true" 
+                                    aria-expanded="false">
+                                <span><?php echo htmlspecialchars($user['username'] ?? 'User'); ?></span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
                             <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden group-hover:block z-50">
                                 <div class="p-4">
-                                    <p class="text-sm text-gray-600">Membership: <span class="font-semibold text-primary"><?php echo ucfirst($user['tier']); ?></span></p>
+                                    <p class="text-sm text-gray-600">Membership: 
+                                        <span class="font-semibold text-primary"><?php echo ucfirst($user['tier'] ?? 'Unknown'); ?></span>
+                                    </p>
                                 </div>
-                                <a href="dashboard.php" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-primary">Dashboard</a>
-                                <a href="logout.php" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-primary">Log Out</a>
+                                <a href="dashboard.php" 
+                                   class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-primary" 
+                                   aria-label="Dashboard">Dashboard</a>
+                                <a href="logout.php" 
+                                   class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-primary" 
+                                   aria-label="Log Out">Log Out</a>
                             </div>
                         </div>
                     <?php } else { ?>
                         <!-- Buttons for signed-out users -->
-                        <a href="register.php" class="bg-primary text-white px-4 py-2 rounded-button font-semibold hover:bg-emerald-600 transition-colors">Register</a>
-                        <a href="login.php" class="bg-white border-2 border-primary text-primary px-4 py-2 rounded-button font-semibold hover:bg-emerald-50 transition-colors">Log In</a>
+                        <a href="register.php" 
+                           class="bg-primary text-white px-4 py-2 rounded-button font-semibold hover:bg-emerald-600 transition-colors" 
+                           aria-label="Register">Register</a>
+                        <a href="login.php" 
+                           class="bg-white border-2 border-primary text-primary px-4 py-2 rounded-button font-semibold hover:bg-emerald-50 transition-colors" 
+                           aria-label="Log In">Log In</a>
                     <?php } ?>
                 </nav>
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-gray-600 hover:text-primary focus:outline-none" id="mobile-menu-button" aria-label="Toggle mobile menu">
+                <button class="md:hidden text-gray-600 hover:text-primary focus:outline-none" 
+                        id="mobile-menu-button" 
+                        aria-label="Toggle mobile menu">
                     <i class="ri-menu-line text-2xl"></i>
                 </button>
             </div>
             <!-- Mobile Navigation -->
-            <nav class="md:hidden fixed inset-y-0 right-0 w-64 bg-white p-4 shadow-lg border-l border-gray-200 transform translate-x-full transition-transform duration-300 ease-in-out" id="mobile-menu" aria-label="Mobile navigation">
+            <nav class="md:hidden fixed inset-y-0 right-0 w-64 bg-white p-4 shadow-lg border-l border-gray-200 transform translate-x-full transition-transform duration-300 ease-in-out" 
+                 id="mobile-menu" 
+                 aria-label="Mobile navigation">
                 <div class="flex justify-end">
-                    <button class="text-gray-600 hover:text-primary" id="close-mobile-menu" aria-label="Close mobile menu">
+                    <button class="text-gray-600 hover:text-primary" 
+                            id="close-mobile-menu" 
+                            aria-label="Close mobile menu">
                         <i class="ri-close-line text-2xl"></i>
                     </button>
                 </div>
                 <div class="flex flex-col space-y-4 mt-4">
-                    <?php if (!isset($_SESSION['user_id'])) { ?>
-                        <!-- Show Home link only for signed-out users -->
-                        <a href="index.php#home" class="text-gray-600 hover:text-primary font-medium">Home</a>
+                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php#home'; ?>" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Home">Home</a>
+                    <a href="how_it_works.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="How It Works">How It Works</a>
+                    <a href="Membership_Tiers.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Membership Tiers">Membership Tiers</a>
+                    <a href="articles.php" 
+                       class="text-gray-600 hover:text-primary font-medium" 
+                       aria-label="Articles">Articles</a>
+                    <?php if (isset($_SESSION['user_id']) && in_array($user['tier'], ['silver', 'gold'])) { ?>
+                        <a href="write_article.php" 
+                           class="text-gray-600 hover:text-primary font-medium" 
+                           aria-label="Write Article">Write Article</a>
                     <?php } ?>
-                    <a href="how_it_works.php" class="text-gray-600 hover:text-primary font-medium">How It Works</a>
-                    <a href="index.php#tiers" class="text-gray-600 hover:text-primary font-medium">Membership Tiers</a>
-                    <a href="articles.php" class="text-gray-600 hover:text-primary font-medium">Articles</a>
                     <?php if (isset($_SESSION['user_id'])) { ?>
                         <!-- User profile section for signed-in users -->
                         <div class="border-t border-gray-200 pt-4">
-                            <p class="text-sm text-gray-600">Signed in as <span class="font-semibold"><?php echo htmlspecialchars($user['username']); ?></span></p>
-                            <p class="text-sm text-gray-600">Membership: <span class="font-semibold text-primary"><?php echo ucfirst($user['tier']); ?></span></p>
+                            <p class="text-sm text-gray-600">Signed in as 
+                                <span class="font-semibold"><?php echo htmlspecialchars($user['username'] ?? 'User'); ?></span>
+                            </p>
+                            <p class="text-sm text-gray-600">Membership: 
+                                <span class="font-semibold text-primary"><?php echo ucfirst($user['tier'] ?? 'Unknown'); ?></span>
+                            </p>
                         </div>
-                        <a href="dashboard.php" class="text-gray-600 hover:text-primary font-medium">Dashboard</a>
-                        <a href="logout.php" class="text-gray-600 hover:text-primary font-medium">Log Out</a>
+                        <a href="dashboard.php" 
+                           class="text-gray-600 hover:text-primary font-medium" 
+                           aria-label="Dashboard">Dashboard</a>
+                        <a href="logout.php" 
+                           class="text-gray-600 hover:text-primary font-medium" 
+                           aria-label="Log Out">Log Out</a>
                     <?php } else { ?>
                         <!-- Buttons for signed-out users -->
-                        <a href="register.php" class="bg-primary text-white px-4 py-2 rounded-button font-semibold hover:bg-emerald-600 transition-colors text-center">Register</a>
-                        <a href="login.php" class="bg-white border-2 border-primary text-primary px-4 py-2 rounded-button font-semibold hover:bg-emerald-50 transition-colors text-center">Log In</a>
+                        <a href="register.php" 
+                           class="bg-primary text-white px-4 py-2 rounded-button font-semibold hover:bg-emerald-600 transition-colors text-center" 
+                           aria-label="Register">Register</a>
+                        <a href="login.php" 
+                           class="bg-white border-2 border-primary text-primary px-4 py-2 rounded-button font-semibold hover:bg-emerald-50 transition-colors text-center" 
+                           aria-label="Log In">Log In</a>
                     <?php } ?>
                 </div>
             </nav>
