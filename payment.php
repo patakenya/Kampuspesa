@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
       <form method="POST" class="space-y-4">
         <input type="tel" name="phone" placeholder="Phone Number (+254XXXXXXXXX)" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900" required>
-        <input type="text" name="transaction_code" placeholder="M-PESA Transaction Code (e.g., WS12345678)" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900" required>
+        <input type="text" name="transaction_code" placeholder="M-PESA Transaction Code (e.g., TE81U7PBN)" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900" required>
         <p class="text-gray-600">Amount: KSh <?php echo $amount; ?></p>
         <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-button font-semibold hover:bg-emerald-600 transition-colors">Submit Payment</button>
       </form>

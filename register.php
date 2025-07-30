@@ -119,9 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['otp'])) {
         <input type="password" name="password" placeholder="Password" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900" required>
         <input type="text" name="referrer_code" placeholder="Referrer Code (Optional)" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900">
         <select name="tier" class="w-full px-4 py-3 rounded-button border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-gray-900" required>
-          <option value="bronze">Bronze (KSh 500)</option>
-          <option value="silver">Silver (KSh 750)</option>
           <option value="gold">Gold (KSh 1,000)</option>
+          <option value="silver">Silver (KSh 750)</option>
+          <option value="bronze">Bronze (KSh 500)</option>
+          
         </select>
         <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-button font-semibold hover:bg-emerald-600 transition-colors">Register</button>
         <?php } else { ?>

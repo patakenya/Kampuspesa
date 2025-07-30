@@ -25,7 +25,7 @@ $users = $conn->query("SELECT id, full_name, email, tier, created_at FROM users 
 <section class="px-4 py-12 bg-gray-50">
   <div class="max-w-7xl mx-auto">
     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center">Manage Users</h1>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 overflow-x-auto">
       <table class="w-full text-left">
         <thead>
           <tr class="border-b border-gray-200">
@@ -48,7 +48,10 @@ $users = $conn->query("SELECT id, full_name, email, tier, created_at FROM users 
                 <td class="py-3 px-4"><?php echo htmlspecialchars($user['email']); ?></td>
                 <td class="py-3 px-4"><?php echo ucfirst($user['tier']); ?></td>
                 <td class="py-3 px-4"><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
-                <td class="py-3 px-4">
+                <td class="py-3 px-4 flex space-x-2">
+                  <a href="user_earnings.php?user_id=<?php echo $user['id']; ?>" class="text-primary hover:text-emerald-600" aria-label="View earnings for <?php echo htmlspecialchars($user['full_name']); ?>">
+                    <i class="ri-money-dollar-circle-line"></i>
+                  </a>
                   <form method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                     <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
                     <button type="submit" name="delete_user" class="text-red-500 hover:text-red-700" aria-label="Delete user <?php echo htmlspecialchars($user['full_name']); ?>">

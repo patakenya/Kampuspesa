@@ -70,6 +70,7 @@ if (isset($_SESSION['admin_id'])) {
                         <a href="users.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Users">Users</a>
                         <a href="articles.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Articles">Articles</a>
                         <a href="transactions.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Transactions">Transactions</a>
+                        <a href="user_earnings.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage User Earnings">Earnings</a>
                         <div class="relative group">
                             <button class="flex items-center space-x-2 text-gray-600 hover:text-primary font-medium focus:outline-none" aria-haspopup="true" aria-expanded="false">
                                 <span><?php echo htmlspecialchars($admin['full_name'] ?? 'Admin'); ?></span>
@@ -100,6 +101,7 @@ if (isset($_SESSION['admin_id'])) {
                         <a href="users.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Users">Users</a>
                         <a href="articles.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Articles">Articles</a>
                         <a href="transactions.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage Transactions">Transactions</a>
+                        <a href="user_earnings.php" class="text-gray-600 hover:text-primary font-medium" aria-label="Manage User Earnings">Earnings</a>
                         <div class="border-t border-gray-200 pt-4">
                             <p class="text-sm text-gray-600">Signed in as <span class="font-semibold"><?php echo htmlspecialchars($admin['full_name'] ?? 'Admin'); ?></span></p>
                         </div>

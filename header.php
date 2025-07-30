@@ -71,7 +71,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center space-x-6">
-                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php#home'; ?>" 
+                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php'; ?>" 
                        class="text-gray-600 hover:text-primary font-medium" 
                        aria-label="Home">Home</a>
                     <a href="how_it_works.php" 
@@ -140,7 +140,7 @@ if (isset($_SESSION['user_id'])) {
                     </button>
                 </div>
                 <div class="flex flex-col space-y-4 mt-4">
-                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php#home'; ?>" 
+                    <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'index.php'; ?>" 
                        class="text-gray-600 hover:text-primary font-medium" 
                        aria-label="Home">Home</a>
                     <a href="how_it_works.php" 
