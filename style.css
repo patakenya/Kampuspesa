@@ -1,0 +1,29 @@
+:where([class^="ri-"])::before {
+  content: none;
+}
+
+/* Lazy loading styles */
+.lazy-load {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazy-load:not(.lazy-loaded) {
+  background-color: #f3f4f6;
+  background-image: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.lazy-load[data-src] {
+  min-height: 200px;
+}
+
+.lazy-load.lazy-loaded {
+  background: none;
+  animation: none;
+}
