@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['otp'])) {
         Earn Money While Studying with <span class="text-primary">CampusEarn</span>
       </h1>
       <p class="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
-        Join thousands of Kenyan students earning through article writing and referrals. Start building your income today with no startup fees!
+        Join thousands of Kenyan students earning through article writing and referrals. Start building your income today!
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : 'register.php'; ?>" 
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['otp'])) {
     </div>
   </div>
 </section>
-<!-- Membership Tiers Section -->
+
 <!-- Membership Tiers Section -->
 <section id="tiers" class="px-4 py-12 bg-gradient-to-br from-primary/5 to-emerald-50 min-h-[85vh] flex items-center">
   <div class="max-w-7xl mx-auto">

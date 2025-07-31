@@ -117,7 +117,7 @@
     <div class="text-center">
       <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose CampusEarn?</h2>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-        CampusEarn is designed for Kenyan students to earn money flexibly while studying. With no startup fees, instant payments, and comprehensive support, it’s the easiest way to build your income on campus.
+        CampusEarn is designed for Kenyan students to earn money flexibly while studying. With instant payments, and comprehensive support, it’s the easiest way to build your income on campus.
       </p>
       <a href="register.php" class="bg-primary text-white px-8 py-4 rounded-button font-semibold text-lg hover:bg-emerald-600 transition-colors">Start Earning Today</a>
     </div>
